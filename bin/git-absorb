@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd $1
+REMOTE=`git remote -v | head -1 | cut -f2 | cut -d" " -f1`
+cd - > /dev/null 2>&1
+git remote add absorb_origin $REMOTE
+git fetch absorb_origin
+git merge -s ours --no-commit absorb_origin/master
+git rm --cached $1
+git add $1
+git commit -m "Absorb $1 submodule"
+git remote rm absorb_origin

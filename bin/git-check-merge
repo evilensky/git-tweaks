@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+  echo "Rationale : Find out if a merge can be done cleanly."
+  echo "Usage     : $(basename $0) <commit>"
+  exit -1
+fi
+
+commit=$1
+current=`git rev-parse --abbrev-ref HEAD`
+ancestor=`git merge-base $current $commit`
+conflicts=`git merge-tree $ancestor $current $commit | grep -l "in both" | wc -l`
+conflicts=$((${conflicts## }+0))
+if [ "$conflicts" -eq 0 ]; then
+  echo "No conflicts between $current and $commit"
+  exit 0
+fi
+
+echo "$conflicts conflicting files found between $current and $commit"
+exit 1
+
