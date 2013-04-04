@@ -4,7 +4,7 @@ COMMITMSG="Flatten submodules"
 FORCE=0
 
 usage(){
-  echo "$0 [-f] [-m <msg>] <branch>" >&2
+  echo "$(basename $0) [-f] [-m <msg>] <branch>" >&2
   exit 1
 }
 
