@@ -34,14 +34,20 @@ if [ -z $BRANCH ]; then
 fi
 
 if [ $FORCE -eq 1 ]; then
-  git branch -D $1 > /dev/null 2>&1
+  git branch -D $BRANCH > /dev/null 2>&1
 fi
-git checkout -b $1 || exit
-for module in `git submodule | cut -d" " -f3`
+git checkout -b $BRANCH || exit
+
+modules=`git submodule | cut -d" " -f3`
+for module in $modules
 do 
   git rm --cached $module
-  rm -rf $module/.git
+  mv $module/.git $module/.git.orig.$$
   git add $module
 done
 git rm .gitmodules
 git commit -m "$COMMITMSG"
+for module in $modules; do
+  mv $module/.git.orig.$$ $module/.git
+done
+
