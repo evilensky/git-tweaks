@@ -29,8 +29,14 @@ done
 shift $(($OPTIND - 1))
 
 BRANCH=$1
-if [ -z $BRANCH ]; then
+if [ -z "$BRANCH" ]; then
   usage
+fi
+
+UNCOMMITTED=`git submodule | grep -e "^[^ ]"`
+if [ -n "$UNCOMMITTED" ]; then
+  echo "Current branch has uncommitted submodule changes. Cannot continue." >&2
+  exit 1
 fi
 
 if [ $FORCE -eq 1 ]; then
