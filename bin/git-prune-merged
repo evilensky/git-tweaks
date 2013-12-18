@@ -29,7 +29,7 @@ if [[ -z "$BRANCH" ]]; then
   BRANCH=`git rev-parse --abbrev-ref HEAD`
 fi
 
-BRANCHES=`git branch --merged $BRANCH | grep -v "${BRANCH}$"`
+BRANCHES=`git branch --merged $BRANCH | cut -b 3- | grep -v "${BRANCH}$"`
 
 if [[ -z "$BRANCHES" ]]; then
   echo "$BRANCH has no fully merged branches."
