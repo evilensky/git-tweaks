@@ -7,8 +7,11 @@ usage(){
   exit 1
 }
 
-while getopts ":y" opt; do
+while getopts ":yh" opt; do
   case $opt in
+    h)
+      usage
+      ;;
     y)
       REPLY=y
       ;;
